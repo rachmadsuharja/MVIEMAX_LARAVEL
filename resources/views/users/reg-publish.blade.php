@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('navbar')
+    @include('partials.navbar')
+@endsection
+
 @section('container')
 <div id="publisher" class="publisher mt-5">
     <div class="container bg-danger text-white p-3">
@@ -34,7 +38,7 @@
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">
-                        <p>Sudah punya akun? <a class="btn btn-primary px-1 py-0" href="../user/publisher/login.php">Login</a></p>
+                        <p>Sudah punya akun? <a class="btn btn-primary px-1 py-0" href="/publisher-login">Login</a></p>
                         <button type="submit" name="register" id="register" class="btn btn-danger mt-2 p-1">Buat Akun</button>
                     </div>
                 </form>

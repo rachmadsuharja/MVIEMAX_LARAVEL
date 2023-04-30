@@ -1,0 +1,54 @@
+.order-card {
+    color: #fff;
+}
+
+.bg-c-blue {
+    background: linear-gradient(45deg, #4099ff, #002cbc);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg, #2ed8b6, #00963c);
+}
+
+.bg-c-yellow {
+    background: linear-gradient(45deg, #FFB64D, #ce7800);
+}
+
+.bg-c-red {
+    background: linear-gradient(45deg, #FF5370, #d50024);
+}
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.card .card-block {
+    padding: 25px;
+}
+
+.order-card i {
+    font-size: 3em;
+    color: rgba(255, 255, 255, .5);
+}
+
+hr {
+    border: 1.5px solid;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+.container li {
+    list-style: none;
+}

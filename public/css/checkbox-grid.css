@@ -1,0 +1,21 @@
+.checkbox-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #dfdfdf;
+}
+
+.checkbox-grid label {
+    color: #dfdfdf;
+}
+
+.form-control {
+    background-color: whitesmoke;
+}
+
+li {
+    list-style-type: none;
+}

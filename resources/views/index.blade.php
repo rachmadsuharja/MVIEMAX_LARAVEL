@@ -1,13 +1,19 @@
 @extends('layouts.main')
 
+@section('navbar')
+    @include('partials.navbar')
+@endsection
+
 @section('container')
-    <div class="main mb-5 p-5 w-100 d-flex justify-content-start">
-        <div class="mainpage-container d-grid">
-            <div class="title-container">
-                <h1 data-aos="zoom-in" data-aos-duration="2000">MVIEMAX</h1>
-                <p id="subtitle"></p>
+    <div class="main m-0 p-0 mb-5 w-100 d-flex justify-content-start">
+        <div class="dark-main d-flex align-items-center m-0 p-0">
+            <div class="mainpage-container d-grid">
+                <div class="title-container mx-3">
+                    <h1 data-aos="zoom-in" data-aos-duration="2000">MVIEMAX</h1>
+                    <p id="subtitle" class="mx-1"></p>
+                </div>
+                <a class="mx-3" href="#popularMovie"><i class="fa-solid fa-list"></i> List Film</a>
             </div>
-            <a href="#popularMovie"><i class="fa-solid fa-list"></i> List Film</a>
         </div>
     </div>
     <div id="popularMovie" class="popularMovie d-grid mt-5">

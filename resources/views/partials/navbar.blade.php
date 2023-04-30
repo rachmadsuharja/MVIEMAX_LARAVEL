@@ -17,10 +17,10 @@
                 User
             </a>
             <ul class="dropdown-menu dropdown-menu">
-                <li><a class="dropdown-item" href="/member-register">Membership</a></li>
+                <li><a class="dropdown-item" href="/membership-register">Membership</a></li>
                 <li><a class="dropdown-item" href="/publisher-register">Publisher</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="/login-admin">Admin</a></li>
+                <li><a class="dropdown-item" href="/admin-login">Admin</a></li>
             </ul>
             </li>
             <li class="nav-item">

@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('navbar')
+    @include('partials.navbar')
+@endsection
+
 @section('container')
     <div class="container bg-danger mt-5 p-3">
         <div id="feedback">
