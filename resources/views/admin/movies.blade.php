@@ -29,13 +29,13 @@
         </thead>
         @foreach ($films as $film)
             <tr>
-                <th >
-                    <a class="btn btn-outline-danger" href="#"><i class="fa-solid fa-trash"></i> Hapus</a>
+                <th>
+                    <a class="btn btn-outline-danger" href="/admin/all-movies/delete-movie/{{$film->id}}" onclick="return confirm('Anda yakin?')"><i class="fa-solid fa-trash"></i> Hapus</a>
                 </th>
                 <td>{{$film->title}}</td>
                 <td>{{$film->release_date}}</td>
                 <td>{{$film->genre}}</td>
-                <td>{{$film->img_cover}}</td> 
+                <td><img src="{{asset('img/temp/' . $film->img_cover)}}" width="100"></td>
                 <td style="width:20em">{{$film->film_desc}}</td>
             </tr>
         @endforeach

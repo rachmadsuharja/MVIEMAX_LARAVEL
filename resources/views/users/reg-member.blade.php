@@ -12,23 +12,33 @@
                         <div class="mb-3 d-flex justify-content-center align-items-center">
                             <h3>Gabung Membership</h3>
                         </div>
-                        <form action="" method="POST">
+                        <form action="{{route('store-reg-member')}}" method="POST">
+                            @csrf
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="m-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li class="list-group-item text-danger">{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="mb-2">
-                                <label for="nama" class="form-label">Nama</label>
-                                <input class="form-control" type="text" name="nama" id="nama" placeholder="Nama..." aria-label="default input example" autofocus required>
+                                <label for="name" class="form-label">Nama</label>
+                                <input class="form-control" type="text" name="name" id="name" placeholder="Nama..." aria-label="default input example">
                             </div>
                             <div class="mb-2">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
                             </div>
                             <div class="mb-2 d-flex justify-content-between">
                                 <div class="mb-2">
                                     <label for="password" class="form-label">Password</label>
-                                    <input class="form-control" type="password" name="password" id="password" placeholder="Password..." aria-label="default input example" required>
+                                    <input class="form-control" type="password" name="password" id="password" placeholder="Password..." aria-label="default input example">
                                 </div>
                                 <div class="mb-2">
                                     <label for="password2" class="form-label">Konfirmasi Password</label>
-                                    <input class="form-control" type="password" name="password2" id="password2" placeholder="Konfirmasi password..." aria-label="default input example" required>
+                                    <input class="form-control" type="password" name="password2" id="password2" placeholder="Konfirmasi password..." aria-label="default input example">
                                 </div>
                             </div>
                             <div class="mb-2">
@@ -41,11 +51,11 @@
                                 </div>
                             </div>
                             <div class="mb-2">
-                                <label for="role" class="form-label">Role</label>
-                                <select class="form-select" name="role" id="role" aria-label="Default select example">
-                                    <option value="Rookie">Rookie</option>
-                                    <option value="Aholic">Aholic</option>
-                                    <option value="Pro">Pro</option>
+                                <label for="role_id" class="form-label">Role</label>
+                                <select class="form-select" name="role_id" id="role_id" aria-label="Default select example">
+                                    @foreach ($roles as $role)
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-4 d-flex justify-content-between">

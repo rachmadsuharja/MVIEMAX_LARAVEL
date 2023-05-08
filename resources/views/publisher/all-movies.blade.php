@@ -1,7 +1,10 @@
 @extends('layouts.main')
+@extends('partials.publisher-navbar')
 
 @section('navbar')
-    @include('partials.publisher-navbar')
+    @section('logout')
+        <a href="/publisher-logout" class="btn btn-outline-dark">LOGOUT</a>
+    @endsection
 @endsection
 
 @section('container')
@@ -27,16 +30,19 @@
         @foreach ($films as $film)
             <tr>
                 <th >
-                    <a class="btn btn-outline-primary" href="/publisher/film-settings/update-movies"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                    <a class="btn btn-outline-danger" href="#"><i class="fa-solid fa-trash"></i> Hapus</a>
+                    <a class="btn btn-outline-primary" href="/publisher/film-settings/update-movies/{{$film->id}}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                    <a class="btn btn-outline-danger" href="/publisher/film-settings/delete-movies/{{$film->id}}" onclick="return confirm('Anda yakin?')"><i class="fa-solid fa-trash"></i> Hapus</a>
                 </th>
                 <td>{{$film->title}}</td>
                 <td>{{$film->release_date}}</td>
                 <td>{{$film->genre}}</td>
-                <td>{{$film->img_cover}}</td> 
+                <td><img src="{{asset('img/temp/' . $film->img_cover)}}" width="100" alt="No Pict"></td> 
                 <td style="width:20em">{{$film->film_desc}}</td>
             </tr>
         @endforeach
     </table>
 </div>
 @endsection
+
+{{-- INCLUDE --}}
+@include('sweetalert::alert')

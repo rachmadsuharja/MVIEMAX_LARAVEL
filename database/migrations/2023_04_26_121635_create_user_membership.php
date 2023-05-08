@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('user_membership', function (Blueprint $table) {
             $table->id();
-            $table->string('username', 60);
+            $table->integer('user_id');
+            $table->string('name');
             $table->string('email');
             $table->string('password');
             $table->enum('gender', ['Laki-laki', 'Perempuan']);

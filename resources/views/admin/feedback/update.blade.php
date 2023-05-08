@@ -10,18 +10,20 @@
             <div class="mb-3 d-flex justify-content-center">
                 <h3 style="color: #dfdfdf;">Update Feedback</h3>
             </div>
-            <form action="" method="POST">
+            <form action="{{route('update-feedback', ['id' => $feed->id])}}" method="POST">
+                @method('put')
+                @csrf
                 <div class="mb-3">
                     <label for="nama" class="form-label">Nama</label>
-                    <input class="form-control" type="text" name="nama" id="nama" placeholder="Nama..." aria-label="default input example" required>
+                    <input class="form-control" type="text" name="name" value="{{$feed->name}}" id="nama" placeholder="Nama..." aria-label="default input example" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="name@name.com">
+                    <input type="email" class="form-control" name="email" value="{{$feed->email}}" id="email" placeholder="name@name.com">
                 </div>
                 <div class="mb-3">
                     <div class="form-floating mt-4">
-                        <textarea class="form-control" placeholder="Feedback" id="feedback" name="feedback" style="height: 100px" required></textarea>
+                        <textarea class="form-control" placeholder="Feedback" id="feedback" name="feedback" style="height: 100px" required>{{$feed->feedback}}</textarea>
                         <label for="feedback" class="text-dark">Feedback</label>
                     </div>
                 </div>

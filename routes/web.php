@@ -2,12 +2,19 @@
 
 use App\Models\Film;
 use App\Models\Role;
+use App\Models\Feedback;
+use App\Models\Publisher;
+use App\Models\Membership;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,8 +28,10 @@ use App\Http\Controllers\UserController;
 
 /*INDEX PAGE*/
 Route::get('/', function() {
+    $films = Film::select('*')->get();
     return view('index', [
-        "title" => "Halaman Utama"
+        "title" => "Halaman Utama",
+        "films"=> $films
     ]);
 });
 
@@ -36,118 +45,83 @@ LOGIN, REGISTER, & FORGOT PASSWORD
 - Login Publisher
 */
 Route::get('/admin-login', [UserController::class, 'loginAdministrator']);
+Route::post('/admin-login/store', [UserController::class, 'storeLoginAdmin'])->name('store-login-admin');
+Route::get('/admin-logout', [UserController::class, 'loginAdministrator']);
 Route::get('/membership-register', [UserController::class, 'registerMembership']);
+Route::post('/membership-register/store', [UserController::class, 'storeRegMember'])->name('store-reg-member');
 Route::get('/membership-login', [UserController::class, 'loginMembership']);
+Route::get('/membership-logout', [UserController::class, 'memberLogout']);
+Route::post('/membership-login/store', [UserController::class, 'storeLoginMember'])->name('store-login-member');
+Route::get('/admin/memberships/edit-member/{id}', [AdminController::class, 'editMember'])->name('edit-member');
+Route::put('/admin/memberships/update-member/{id}', [AdminController::class, 'updateMember'])->name('update-member');
+Route::get('/admin/memberships/delete-member/{id}', [AdminController::class, 'deleteMember'])->name('delete-member'); 
 Route::get('/publisher-register', [UserController::class, 'registerPublisher']);
+Route::post('/publisher-register/store', [UserController::class, 'storeRegPublisher'])->name('store-reg-publisher');
 Route::get('/publisher-login', [UserController::class, 'loginPublisher']);
+Route::get('/publisher-forgot-password', [UserController::class, 'forgotPublisher']);
+Route::post('/publisher-login/store', [UserController::class, 'storeLoginPublisher'])->name('store-login-publisher');
+Route::get('/publisher-logout', [UserController::class, 'publisherLogout']);
 
-/*
-DASHBOARD PAGE
-==============
-Admin, Publisher, & Membership
-*/
-Route::get('/administrator', function() {
-    return view('/admin/dashboard', [
-        "title" => "Administrator"
-    ]);
-});
+/*ADMIN PAGE*/
+Route::get('/administrator', [AdminController::class, 'dashboard'])->name('admin-dashboard');
+
+Route::get('/admin/all-movies', [AdminController::class, 'film'])->name('all-movies');
+Route::get('/admin/all-movies/delete-movie/{id}', [AdminController::class, 'deleteFilm'])->name('rm-movie');
+
+Route::get('/admin/roles', [AdminController::class, 'role'])->name('roles');
+Route::get('/admin/roles/add-role', [AdminController::class, 'addRole'])->name('add-role');
+Route::post('/admin/roles/add-role/store', [AdminController::class, 'storeRole'])->name('store-role');
+Route::get('/admin/roles/edit-role/{id}', [AdminController::class, 'editRole'])->name('edit-role');
+Route::put('/admin/roles/update-role/{id}', [AdminController::class, 'updateRole'])->name('update-role');
+Route::get('/admin/roles/delete-role/{id}', [AdminController::class, 'deleteRole'])->name('delete-role');
+
+Route::get('/admin/publishers', [AdminController::class, 'publisher'])->name('publisher');
+Route::get('/admin/publishers/add-publisher', [AdminController::class, 'addPublisher'])->name('add-publisher');
+Route::post('/admin/publishers/add-publisher/store', [AdminController::class, 'storePublisher'])->name('store-publisher');
+Route::get('/admin/publishers/edit-publisher/{id}', [AdminController::class, 'editPublisher'])->name('edit-publisher');
+Route::put('/admin/publishers/update-publisher/{id}', [AdminController::class, 'updatePublisher'])->name('update-publisher');
+Route::get('/admin/publishers/delete-publisher/{id}', [AdminController::class, 'deletePublisher'])->name('delete-publisher');
+
+Route::get('/admin/memberships', [AdminController::class, 'membership'])->name('membership');
+Route::get('/admin/memberships/add-member', [AdminController::class, 'addMember'])->name('add-member');
+Route::post('/admin/memberships/add-member/store', [AdminController::class, 'storeMember'])->name('store-member');
+Route::get('/admin/memberships/edit-member/{id}', [AdminController::class, 'editMember'])->name('edit-member');
+Route::put('/admin/memberships/update-member/{id}', [AdminController::class, 'updateMember'])->name('update-member');
+Route::get('/admin/memberships/delete-member/{id}', [AdminController::class, 'deleteMember'])->name('delete-member');
+
+Route::get('/user-feedback', [AdminController::class, 'addFeedback'])->name('add-feedback');
+Route::post('/user-feedback/store-feedback', [AdminController::class, 'storeFeedback'])->name('store-feedback');
+Route::get('/admin/feedback', [AdminController::class, 'feedback'])->name('feedback');
+Route::get('/admin/feedback/edit-feedback/{id}', [AdminController::class, 'editFeedback'])->name('edit-feedback');
+Route::put('/admin/feedback/update-feedback/{id}', [AdminController::class, 'updateFeedback'])->name('update-feedback');
+Route::get('/admin/feedback/delete-feedback/{id}', [AdminController::class, 'deleteFeedback'])->name('delete-feedback');
+
+/*PUBLISHER PAGE*/
 Route::get('/publisher', function() {
     return view('/publisher/dashboard', [
         "title" => "Publisher"
     ]);
 });
-Route::get('/membership', function() {
-    return view('/membership/dashboard', [
-        "title" => "Membership"
-    ]);
-});
-
-/*
-TABLE
-=====
-- Movie Table [admin, publisher, & member]
-- Role Table
-- Membership & Publisher Table
-- Feedback Table
-*/
-Route::get('/admin/all-movies', function() {
-    $films = Film::select('*')->get();
-    return view('/admin/movies', [
-        "title" => "Movies",
-        "films" => $films
-    ]);
-});
-Route::get('/publisher/film-settings', [FilmController::class, 'index'])->name('films');
-Route::get('/membership/all-movies', function() {
-    $films = Film::select('*')->get();
-    return view('/membership/all-movies', [
-        "title" => "All Movies",
-        "films" => $films
-    ]);
-});
-Route::get('/admin/roles', function() {
-    $roles = Role::select('*')->get();
-    return view('/admin/roles', [
-        "title" => "Role Settings",
-        "roles" => $roles
-    ]);
-});
-Route::get('/admin/publishers', function() {
-    return view('/admin/publishers', [
-        "title" => "Publisher Settings"
-    ]);
-});
-Route::get('/admin/memberships', function() {
-    return view('/admin/members', [
-        "title" => "Membership Settings"
-    ]);
-});
-Route::get('/admin/feedback', function() {
-    return view('/admin/feedback', [
-        "title" => "Feedback Settings"
-    ]);
-});
-
-/*
-CRUD FORM
-=========
-- Movies CRUD
-- Role CRUD
-- Publisher & Membership CRUD
-- Feedback
-*/
-//Movies
+Route::get('/publisher/film-settings', [FilmController::class, 'index']);
 Route::get('/publisher/film-settings/add-movies', [FilmController::class, 'create']);
-Route::get('/publisher/film-settings/store', [FilmController::class, 'store']);
-Route::get('/publisher/film-settings/update-movies', [FilmController::class, 'update']);
-//Role
-Route::get('/admin/roles/add-role', [RoleController::class, 'create']);
-Route::get('/admin/roles/store', [RoleController::class, 'store']);
-Route::get('/admin/roles/update-role', [RoleController::class, 'update']);
-//Publisher
-Route::get('/admin/publishers/update-publisher', function() {
-    return view('/admin/publisher/update', [
-        "title" => "User Feedback"
-    ]);
-});
-//Membership
+Route::post('/publisher/film-settings/store','App\Http\Controllers\FilmController@store')->name('add-movie');
+Route::get('/publisher/film-settings/update-movies/{id}','App\Http\Controllers\FilmController@edit')->name('edit-movie');
+Route::put('/publisher/film-settings/update-movies/{id}','App\Http\Controllers\FilmController@update')->name('update-movie');
+Route::get('/publisher/film-settings/delete-movies/{id}', 'App\Http\Controllers\FilmController@destroy')->name('delete-movie');
 
-//Feedback
-Route::get('/user-feedback', function() {
-    return view('feedback', [
-        "title" => "User Feedback"
-    ]);
-});
-Route::get('/admin/feedback', function() {
-    return view('/admin/feedback', [
-        "title" => "Feedback Settings"
-    ]);
-});
-Route::get('/admin/feedback/update-feedback', function() {
-    return view('/admin/feedback/update', [
-        "title" => "Update Feedback"
-    ]);
-});
+/*MEMBER PAGE*/
+    Route::get('/membership', function() {
+        return view('/membership/dashboard', [
+            "title" => "Membership"
+        ]);
+    });
+    Route::get('/membership/all-movies', function() {
+        $films = Film::select('*')->get();
+        return view('/membership/all-movies', [
+            "title" => "All Movies",
+            "films" => $films
+        ]);
+    });
 
 Route::get('/about-laravel', function () {
     return view('welcome');

@@ -11,20 +11,21 @@
                 <div class="mb-3 d-flex justify-content-center">
                     <h3 style="color:#dfdfdf">Edit Publisher</h3>
                 </div>
-                    <form action="" method="POST">
-                        <input type="hidden" name="id" value="">
+                    <form action="{{route('update-publisher', ['id' => $pub->id])}}" method="POST">
+                        @method('put')
+                        @csrf
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input class="form-control" type="text" name="username" value="" id="username" placeholder="Username..." aria-label="default input example" required>
+                            <label for="name" class="form-label">Username</label>
+                            <input class="form-control" type="text" name="username" value="{{$pub->username}}" id="username" placeholder="Username..." aria-label="default input example">
                         </div>
                         <div class="mb-4">
                             <label for="telp" class="form-label">No. Telpon</label>
-                            <input class="form-control" type="number" name="telp" value="" id="telp" placeholder="Telpon..." aria-label="default input example" required>
+                            <input class="form-control" type="number" name="no_telp" value="{{$pub->no_telp}}" id="telp" placeholder="Telpon..." aria-label="default input example">
                         </div>
                         <div class="mb-3">
                             <div class="form-floating">
-                                <textarea class="form-control" placeholder="Alamat..." id="alamat" name="alamat" style="height: 100px; resize:none;" required></textarea>
-                                <label for="alamat" class="text-dark">Alamat</label>
+                                <textarea class="form-control" placeholder="Alamat..." id="address" name="address" style="height: 100px; resize:none;">{{$pub->address}}</textarea>
+                                <label for="address" class="text-dark">Alamat</label>
                             </div>
                         </div>
                         <div class="mb-3 d-flex justify-content-between">

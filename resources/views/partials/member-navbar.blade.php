@@ -19,7 +19,7 @@
             </li>
             <div class="container bg-danger d-flex align-items-center justify-content-start">
                 <li class="nav-item w-100">
-                    <button class="btn btn-outline-dark p-1">LOGOUT</button>
+                    @yield('logout')
                 </li>
             </div>
         </ul>

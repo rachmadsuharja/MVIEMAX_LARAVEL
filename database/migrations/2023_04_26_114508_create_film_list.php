@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('film_list', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100);
-            $table->date('release_date');
+            $table->string('release_date');
             $table->text('genre');
             $table->string('img_cover', 255);
             $table->text('film_desc');

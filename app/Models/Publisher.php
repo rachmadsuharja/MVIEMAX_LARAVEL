@@ -5,13 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class Film extends Model
+class Publisher extends Model
 {
     use HasFactory;
-
-    protected $table = 'film_list';
+    
+    protected $table = 'user_publisher';
     protected $primaryKey = 'id';
-    protected $fillable = ['title', 'release_date', 'genre', 'img_cover', 'film_desc' ];
-    protected $guarded = [];
+    protected $fillable = ['user_id', 'username', 'no_telp', 'password', 'address'];
 }

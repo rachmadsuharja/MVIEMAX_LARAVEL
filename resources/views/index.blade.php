@@ -19,10 +19,12 @@
     <div id="popularMovie" class="popularMovie d-grid mt-5">
         <h2 class="text-white mt-5 d-flex justify-content-center">Film Terpopuler</h2>
         <div id="all-list">
+            @foreach ($films as $film)
                 <div class="card-box">
-                    <img class="coverImg" src="" width="500">
-                    <h1>Judul</h1>
+                    <img class="coverImg" src="{{asset('img/temp/' . $film->img_cover)}}" width="500">
+                    <h1>{{$film->title}}</h1>
                 </div>
+            @endforeach
         </div>
     </div>
     <div class="footer mt-5 p-1 bg-danger">

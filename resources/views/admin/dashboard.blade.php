@@ -18,7 +18,7 @@
                         <h6 class="m-b-20">Membership</h6>
                         <hr/>
                         <div class="container bg-transparent d-flex justify-content-between align-items-center">
-                            <h1>0</h1>
+                            <h1>{{$memberAmount}}</h1>
                             <i class="fa-solid fa-user-group"></i>
                         </div>
                         <div class="container bg-transparent mt-2"><a class="text-white text-decoration-none" href="/admin/memberships">Detail <i class="fa-solid fa-arrow-up-right-from-square text-white" style="font-size: 1em;"></i></a></div>
@@ -31,7 +31,7 @@
                         <h6 class="m-b-20">Publisher</h6>
                         <hr>
                         <div class="container bg-transparent d-flex justify-content-between align-items-center">
-                            <h1>0</h1>
+                            <h1>{{$publisherAmount}}</h1>
                             <i class="fa-solid fa-user-group"></i>
                         </div>
                         <div class="container bg-transparent mt-2"><a class="text-white text-decoration-none" href="/admin/publishers">Detail <i class="fa-solid fa-arrow-up-right-from-square text-white" style="font-size: 1em;"></i></a></div>
@@ -44,7 +44,7 @@
                         <h6 class="m-b-20">Movie</h6>
                         <hr>
                         <div class="container bg-transparent d-flex justify-content-between align-items-center">
-                            <h1>0</h1>
+                            <h1>{{$filmAmount}}</h1>
                             <i class="fa-solid fa-film"></i>
                         </div>
                         <div class="container bg-transparent mt-2"><a class="text-white text-decoration-none" href="/admin/all-movies">Detail <i class="fa-solid fa-arrow-up-right-from-square text-white" style="font-size: 1em;"></i></a></div>
@@ -57,7 +57,7 @@
                         <h6 class="m-b-20">Role</h6>
                         <hr>
                         <div class="container bg-transparent d-flex justify-content-between align-items-center">
-                            <h1>0</h1>
+                            <h1>{{$roleAmount}}</h1>
                             <i class="fa-solid fa-user-gear"></i>
                         </div>
                         <div class="container bg-transparent mt-2"><a class="text-white text-decoration-none" href="/admin/roles">Detail <i class="fa-solid fa-arrow-up-right-from-square text-white" style="font-size: 1em;"></i></a></div>

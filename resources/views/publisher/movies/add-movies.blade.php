@@ -10,7 +10,7 @@
             <div class="mb-3 d-flex justify-content-center">
                 <h3 style="color: #dfdfdf;">Tambah Film</h3>
             </div>
-                <form action="/publisher/film-settings/store" method="post" enctype="multipart/form-data">
+                <form action="{{route('add-movie')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Judul</label>
@@ -48,11 +48,27 @@
                                     <label for="romance">Romance</label>
                                 </div>
                                 <div class="checkbox-grid">
-                                    <input type="checkbox" name="genre[6]" value="Drama" id="drama">
+                                    <input type="checkbox" name="genre[6]" value="Shounen" id="shounen">
+                                    <label for="shounen">Shounen</label>
+                                </div>
+                                <div class="checkbox-grid">
+                                    <input type="checkbox" name="genre[7]" value="Shoujo" id="shoujo">
+                                    <label for="Shoujo">Shoujo</label>
+                                </div>
+                                <div class="checkbox-grid">
+                                    <input type="checkbox" name="genre[8]" value="Drama" id="drama">
                                     <label for="drama">Drama</label>
                                 </div>
                                 <div class="checkbox-grid">
-                                    <input type="checkbox" name="genre[7]" value="Horror" id="horror">
+                                    <input type="checkbox" name="genre[9]" value="Mystery" id="mystery">
+                                    <label for="mystery">Mystery</label>
+                                </div>
+                                <div class="checkbox-grid">
+                                    <input type="checkbox" name="genre[10]" value="Thriller" id="thriller">
+                                    <label for="thriller">Thriller</label>
+                                </div>
+                                <div class="checkbox-grid">
+                                    <input type="checkbox" name="genre[11]" value="Horror" id="horror">
                                     <label for="horror">Horror</label>
                                 </div>
                         </div>

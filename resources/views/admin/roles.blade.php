@@ -30,8 +30,8 @@
             @foreach ($roles as $role)
                 <tr>
                     <th>
-                        <a class="btn btn-outline-primary p-1" href="/admin/roles/update-role"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                        <a class="btn btn-outline-danger p-1" href="#"><i class="fa-solid fa-trash"></i> Hapus</a>
+                        <a class="btn btn-outline-primary p-1" href="/admin/roles/edit-role/{{$role->id}}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                        <a class="btn btn-outline-danger p-1" href="/admin/roles/delete-role/{{$role->id}}" onclick="return confirm('Anda yakin?')"><i class="fa-solid fa-trash"></i> Hapus</a>
                     </th>
                     <td>{{$role->name}}</td>
                     <td>{{$role->features}}</td>
@@ -42,3 +42,6 @@
         </table>
     </div>
 @endsection
+
+{{-- REQUIRE SCRIPT --}}
+@include('sweetalert::alert')

@@ -17,7 +17,7 @@
                 </div>
                 <input type="text" id="searchInput" onkeyup="searchPublisher()" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
             </div>
-            <a class="btn btn-primary p-1 m-2" href="/publisher-register" target="_blank"><i class="fa-solid fa-circle-plus"></i> Tambah</a>
+            <a class="btn btn-primary p-1 m-2" href="/admin/publishers/add-publisher"><i class="fa-solid fa-circle-plus"></i> Tambah</a>
         </div>
         <table id="filmPublisher" class="table table-dark" style="color: #dddd;">
             <thead>
@@ -26,17 +26,17 @@
                 <th class="bg-secondary text-white" scope="col">No. Telpon</th>
                 <th class="bg-secondary text-white" scope="col">Alamat</th>
             </thead>
-            {{-- @foreach($feedback as $feed) --}}
+            @foreach($publisher as $pub)
             <tr>
                 <th>
-                    <a class="btn btn-outline-primary p-1" href="/admin/publishers/update-publisher"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                    <a class="btn btn-outline-danger p-1" href="#"><i class="fa-solid fa-trash"></i> Hapus</a>
+                    <a class="btn btn-outline-primary p-1" href="/admin/publishers/edit-publisher/{{$pub->id}}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                    <a class="btn btn-outline-danger p-1" href="/admin/publishers/delete-publisher/{{$pub->id}}" onclick="return confirm('Anda yakin?')"><i class="fa-solid fa-trash"></i> Hapus</a>
                 </th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{$pub->username}}</td>
+                <td>{{$pub->no_telp}}</td>
+                <td>{{$pub->address}}</td>
             </tr>
-            {{-- @endforeach --}}
+            @endforeach
         </table>
     </div>
 @endsection

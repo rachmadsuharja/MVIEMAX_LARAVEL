@@ -13,10 +13,11 @@
                         <div class="mb-3 d-flex justify-content-center">
                             <h3>Feedback</h3>
                         </div>
-                        <form action="" method="POST">
+                        <form action="{{route('store-feedback')}}" method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama</label>
-                                <input class="form-control" type="text" name="nama" id="nama" placeholder="Nama..." aria-label="default input example" required>
+                                <input class="form-control" type="text" name="name" id="nama" placeholder="Nama..." aria-label="default input example" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>

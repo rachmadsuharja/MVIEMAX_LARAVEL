@@ -12,7 +12,8 @@
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <h3>Gabung Bersama Kami</h3>
                 </div>
-                <form action="" method="POST">
+                <form action="{{route('store-reg-publisher')}}" method="POST">
+                    @csrf
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input class="form-control" type="text" name="username" id="username" placeholder="Username..." aria-label="default input example" required>
@@ -28,13 +29,13 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="telp" class="form-label">No. Telpon</label>
-                        <input class="form-control" type="number" name="telp" id="telp" placeholder="Telpon..." aria-label="default input example" required>
+                        <label for="no_telp" class="form-label">No. Telpon</label>
+                        <input class="form-control" type="number" name="no_telp" id="no_telp" placeholder="Telpon..." aria-label="default input example" required>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            <textarea class="form-control" placeholder="Alamat..." id="alamat" name="alamat" style="height: 100px; resize:none;" required></textarea>
-                            <label for="alamat" class="text-dark">Alamat</label>
+                            <textarea class="form-control" placeholder="Alamat..." id="address" name="address" style="height: 100px; resize:none;" required></textarea>
+                            <label for="address" class="text-dark">Alamat</label>
                         </div>
                     </div>
                     <div class="mb-3 d-flex justify-content-between">

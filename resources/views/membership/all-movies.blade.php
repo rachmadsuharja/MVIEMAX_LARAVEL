@@ -1,7 +1,10 @@
 @extends('layouts.main')
+@extends('partials.member-navbar')
 
 @section('navbar')
-    @include('partials.member-navbar')
+    @section('logout')
+        <a href="/membership-logout" class="btn btn-outline-dark">LOGOUT</a>
+    @endsection
 @endsection
 
 @section('container')
@@ -27,7 +30,7 @@
                 <td>{{$film->title}}</td>
                 <td>{{$film->release_date}}</td>
                 <td>{{$film->genre}}</td>
-                <td>{{$film->img_cover}}</td> 
+                <td><img src="{{asset('img/temp/' . $film->img_cover)}}" width="100" alt="No Pict"></td> 
                 <td style="width:20em">{{$film->film_desc}}</td>
             </tr>
         @endforeach
