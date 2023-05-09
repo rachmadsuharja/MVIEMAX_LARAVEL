@@ -74,6 +74,11 @@ class AdminController extends Controller
             'name' => 'required|unique:membership_role|max:255',
             'features' => 'required',
             'price' => 'required',
+        ],[
+            'name.required' => 'Isi nama role terebih dahulu',
+            'name.unique' => 'Nama role sudah terdaftar',
+            'features.required' => 'Pilih fitur terlebih dahulu',
+            'price.required' => 'Harga tidak boleh kosong',
         ]);
         $features = implode(', ', $request->features);
         $upRole = new Role();
@@ -213,7 +218,6 @@ class AdminController extends Controller
             'password.required' => 'Password tidak boleh kosong',
             'gender.required' => 'Pilih gender terlebih dahulu',
         ]);
-        dd($request);
         $data = User::create([
             "name" => $request->name,
             "username" => microtime(true),

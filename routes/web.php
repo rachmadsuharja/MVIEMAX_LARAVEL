@@ -31,13 +31,15 @@ Route::get('/', function() {
     $films = Film::select('*')->get();
     return view('index', [
         "title" => "Halaman Utama",
-        "films"=> $films
+        "films"=> $films,
     ]);
 });
 
+Route::get('/testing-alert', [UserController::class, 'testAlert']);
+
 /*
 LOGIN, REGISTER, & FORGOT PASSWORD
-================
+==================================
 - Login Admin
 - Register Member
 - Login Member
@@ -50,15 +52,18 @@ Route::get('/admin-logout', [UserController::class, 'loginAdministrator']);
 Route::get('/membership-register', [UserController::class, 'registerMembership']);
 Route::post('/membership-register/store', [UserController::class, 'storeRegMember'])->name('store-reg-member');
 Route::get('/membership-login', [UserController::class, 'loginMembership']);
-Route::get('/membership-logout', [UserController::class, 'memberLogout']);
+Route::get('/membership-forgot-password', [UserController::class, 'forgotMember']);
+Route::put('/membership-update-password', [UserController::class, 'updateMemberPass'])->name('member-update-password');
 Route::post('/membership-login/store', [UserController::class, 'storeLoginMember'])->name('store-login-member');
+Route::get('/membership-logout', [UserController::class, 'memberLogout']);
 Route::get('/admin/memberships/edit-member/{id}', [AdminController::class, 'editMember'])->name('edit-member');
 Route::put('/admin/memberships/update-member/{id}', [AdminController::class, 'updateMember'])->name('update-member');
-Route::get('/admin/memberships/delete-member/{id}', [AdminController::class, 'deleteMember'])->name('delete-member'); 
+Route::get('/admin/memberships/delete-member/{id}', [AdminController::class, 'deleteMember'])->name('delete-member');
 Route::get('/publisher-register', [UserController::class, 'registerPublisher']);
 Route::post('/publisher-register/store', [UserController::class, 'storeRegPublisher'])->name('store-reg-publisher');
 Route::get('/publisher-login', [UserController::class, 'loginPublisher']);
 Route::get('/publisher-forgot-password', [UserController::class, 'forgotPublisher']);
+Route::put('/publisher-update-password', [UserController::class, 'updatePublishPass'])->name('publisher-update-password');
 Route::post('/publisher-login/store', [UserController::class, 'storeLoginPublisher'])->name('store-login-publisher');
 Route::get('/publisher-logout', [UserController::class, 'publisherLogout']);
 
@@ -70,7 +75,7 @@ Route::get('/admin/all-movies/delete-movie/{id}', [AdminController::class, 'dele
 
 Route::get('/admin/roles', [AdminController::class, 'role'])->name('roles');
 Route::get('/admin/roles/add-role', [AdminController::class, 'addRole'])->name('add-role');
-Route::post('/admin/roles/add-role/store', [AdminController::class, 'storeRole'])->name('store-role');
+Route::post('/admin/roles/add-role', [AdminController::class, 'storeRole'])->name('store-role');
 Route::get('/admin/roles/edit-role/{id}', [AdminController::class, 'editRole'])->name('edit-role');
 Route::put('/admin/roles/update-role/{id}', [AdminController::class, 'updateRole'])->name('update-role');
 Route::get('/admin/roles/delete-role/{id}', [AdminController::class, 'deleteRole'])->name('delete-role');

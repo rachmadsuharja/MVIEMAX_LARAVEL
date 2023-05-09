@@ -11,18 +11,17 @@
                 <div class="mb-3 d-flex justify-content-center">
                     <h3 style="color:#dfdfdf">Tambah Publisher</h3>
                 </div> 
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
+                <form action="{{route('store-publisher')}}" method="POST">
+                    @csrf
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
                                     @foreach ($errors->all() as $error)
-                                        <div class="alert alert-transparent p-0 text-white-50 mt-1"><i class="fa-solid fa-circle-exclamation"></i> {{ $error }}</div>
+                                        <div class="alert alert-transparent p-0 text-white-50 mt-1"><i class="fa-solid fa-circle-exclamation"></i> test</div>
                                     @endforeach
                                 </ul>
                             </div>
                         @endif
-                    <form action="{{route('store-publisher')}}" method="POST">
-                        @csrf
-                        
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input class="form-control" type="text" name="username" value="{{old('username')}}" id="username" placeholder="Username..." aria-label="default input example">
