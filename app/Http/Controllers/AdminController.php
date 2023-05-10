@@ -9,11 +9,12 @@ use App\Models\Admin;
 use App\Models\Feedback;
 use App\Models\Publisher;
 use App\Models\Membership;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -70,16 +71,20 @@ class AdminController extends Controller
         ]);
     }
     public function storeRole(Request $request) {
-        $request->validate([
-            'name' => 'required|unique:membership_role|max:255',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:membership_role|max:50',
             'features' => 'required',
             'price' => 'required',
         ],[
             'name.required' => 'Isi nama role terebih dahulu',
             'name.unique' => 'Nama role sudah terdaftar',
-            'features.required' => 'Pilih fitur terlebih dahulu',
+            'features.required' => 'Pilih fitur minimal satu',
             'price.required' => 'Harga tidak boleh kosong',
         ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $features = implode(', ', $request->features);
         $upRole = new Role();
         $upRole->name = $request->name;
@@ -97,6 +102,20 @@ class AdminController extends Controller
         ]);
     }
     public function updateRole(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:membership_role|max:50',
+            'features' => 'required',
+            'price' => 'required',
+        ],[
+            'name.required' => 'Isi nama role terebih dahulu',
+            'name.unique' => 'Nama role sudah terdaftar',
+            'features.required' => 'Pilih fitur minimal satu',
+            'price.required' => 'Harga tidak boleh kosong',
+        ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $upRole = Role::findorFail($id);
         $features = implode(', ', $request->features);
         $upRole->update([
@@ -128,23 +147,29 @@ class AdminController extends Controller
     }
     public function storePublisher(Request $request) {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|unique:user_publisher|max:50',
-            'password' => 'required',
-            'no_telp' => 'required',
+            'username' => 'required|unique:user_publisher|alpha|min:6',
+            'no_telp' => 'required|numeric',
+            'password' => 'required|confirmed',
             'address' => 'required',
         ], [
-            'username.required' => 'Isi Username terlebih dahulu',
-            'password.required' => 'Isi password terlebih dahulu',
-            'no_telp.required' => 'Nomor telpon tidak boleh kosong',
+            'username.required' => 'isi username terlebih dahulu',
+            'username.unique' => 'username sudah terdaftar',
+            'username.alpha' => 'username hanya boleh terdiri dari huruf',
+            'no_telp.required' => 'nomor telpon tidak boleh kosong',
+            'no_telp.numeric' => 'nomor telpon tidak valid',
+            'password.required' => 'password tidak boleh kosong',
+            'password.confirmed' => 'password tidak sama',
             'address.required' => 'Alamat tidak boleh kosong',
         ]);
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors()->messages());
+            dd($validator->errors()->messages());
+            return redirect('/publisher-register')->withErrors($validator->errors()->messages());
         }
+        $username = Str::lower($request->username);
         $data = User::create([
             "name" => time(),
             "email" => microtime(true),
-            "username" => $request->username,
+            "username" => $username,
             "password" => Hash::make($request->password),
             "role" => "publisher",
         ]);
@@ -167,15 +192,32 @@ class AdminController extends Controller
         ]);
     }
     public function updatePublisher(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|unique:user_publisher|alpha|min:6',
+            'no_telp' => 'required|numeric',
+            'address' => 'required',
+        ], [
+            'username.required' => 'isi username terlebih dahulu',
+            'username.unique' => 'username sudah terdaftar',
+            'username.alpha' => 'username hanya boleh terdiri dari huruf',
+            'no_telp.required' => 'nomor telpon tidak boleh kosong',
+            'no_telp.numeric' => 'nomor telpon tidak valid',
+            'address.required' => 'Alamat tidak boleh kosong',
+        ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect('/publisher-register')->withErrors($validator->errors()->messages());
+        }
         $publisher = Publisher::findOrFail($id);
         $user_id = DB::table('user_publisher')->where('id', $id)->value('user_id');
+        $username = Str::lower($request->username);
         DB::table('users')->where('id', $user_id)->update([
-            "username" => $request->username,
+            "username" => $username,
             "email" => microtime(true),
             "role" => "publisher",
         ]);
         $publisher->user_id = $user_id;
-        $publisher->username = $request->username;
+        $publisher->username = $username;
         $publisher->no_telp = $request->no_telp;
         $publisher->address = $request->address;
         $publisher->save();
@@ -207,17 +249,27 @@ class AdminController extends Controller
         ]);
     }
     public function storeMember(Request $request) {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'gender' => 'required',
-        ],[
+        $validator = Validator::make($request->all(), [
+            "name" => 'required|alpha',
+            "email" => 'required|unique:user_membership|email',
+            "password" => 'required|confirmed',
+            "gender" => 'required',
+            "role_id" => 'required',
+        ], [
             'name.required' => 'Nama tidak boleh kosong',
-            'email.required' => 'Email tidak boleh kosong',
+            'name.alpha' => 'Nama harus terdiri dari huruf',
+            'email.required' => 'Nama tidak boleh kosong',
+            'email.unique' => 'Email sudah terdaftar',
+            'email.email' => 'Email tidak valid',
             'password.required' => 'Password tidak boleh kosong',
+            'password.confirmed' => 'Password tidak sama',
             'gender.required' => 'Pilih gender terlebih dahulu',
+            'role_id.required' => 'Pilih role terlebih dahulu',
         ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect('/admin/memberships')->withErrors($validator->errors()->messages());
+        }
         $data = User::create([
             "name" => $request->name,
             "username" => microtime(true),
@@ -247,6 +299,24 @@ class AdminController extends Controller
         ]);
     }
     public function updateMember(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            "name" => 'required|alpha',
+            "email" => 'required|unique:user_membership|email',
+            "gender" => 'required',
+            "role_id" => 'required',
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'name.alpha' => 'Nama harus terdiri dari huruf',
+            'email.required' => 'Nama tidak boleh kosong',
+            'email.unique' => 'Email sudah terdaftar',
+            'email.email' => 'Email tidak valid',
+            'gender.required' => 'Pilih gender terlebih dahulu',
+            'role_id.required' => 'Pilih role terlebih dahulu',
+        ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $membership = Membership::findOrFail($id);
         $user_id = DB::table('user_membership')->where('id', $id)->value('user_id');
         DB::table('users')->where('id', $user_id)->update([
@@ -288,11 +358,22 @@ class AdminController extends Controller
         ]);
     }
     public function storeFeedback(Request $request) {
-        $upFeedback = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'feedback' => 'required'
+        $validator = Validator::make($request->all(), [
+            "name" => 'required|alpha',
+            "email" => 'required|unique:user_membership|email',
+            "feedback" => 'required'
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'name.alpha' => 'Nama tidak valid',
+            'email.required' => 'Nama tidak boleh kosong',
+            'email.unique' => 'Anda sudah memberikan ulasan',
+            'email.email' => 'Email tidak valid',
+            'feedback.required' => 'Feedback tidak boleh kosong',
         ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $upFeedback = new Feedback();
         $upFeedback->name = $request->name;
         $upFeedback->email = $request->email;
@@ -309,15 +390,34 @@ class AdminController extends Controller
         ]);
     }
     public function updateFeedback(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            "name" => 'required|alpha',
+            "email" => 'required|unique:user_membership|email',
+            "feedback" => 'required',
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'name.alpha' => 'Nama harus terdiri dari huruf',
+            'email.required' => 'Nama tidak boleh kosong',
+            'email.unique' => 'Email sudah terdaftar',
+            'email.email' => 'Email tidak valid',
+            'feedback.required' => 'Feedback tidak boleh kosong',
+        ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $upFeedback = Feedback::findorFail($id);
+        $upFeedback->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'feedback' => $request->feedback,
+        ]);
         $upFeedback->update($request->all());
         return redirect('/admin/feedback');
     }
     public function deleteFeedback($id) {
         $rmFeedback = Feedback::find($id);
         $rmFeedback->delete($id);
-
         return redirect('/admin/feedback');
     }
 }
-

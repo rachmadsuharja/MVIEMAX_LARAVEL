@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Publisher;
 use App\Models\Membership;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -30,21 +31,25 @@ class UserController extends Controller
     }
     public function storeRegMember(Request $request) {
         $validator = Validator::make($request->all(), [
-            "name" => 'required',
-            "email" => 'required|unique:user_membership',
+            "name" => 'required|alpha',
+            "email" => 'required|unique:user_membership|email',
             "password" => 'required|confirmed',
             "gender" => 'required',
             "role_id" => 'required',
         ], [
             'name.required' => 'Nama tidak boleh kosong',
+            'name.alpha' => 'Nama harus terdiri dari huruf',
             'email.required' => 'Nama tidak boleh kosong',
+            'email.unique' => 'Email sudah terdaftar',
+            'email.email' => 'Email tidak valid',
             'password.required' => 'Password tidak boleh kosong',
+            'password.confirmed' => 'Password tidak sama',
             'gender.required' => 'Pilih gender terlebih dahulu',
             'role_id.required' => 'Pilih role terlebih dahulu',
         ]);
         if ($validator->fails()) {
-            dd($validator);
-            return redirect('/testing-alert')->withErrors($validator->errors()->messages());
+            dd($validator->errors()->messages());
+            return redirect('/membership-register')->withErrors($validator->errors()->messages());
         }
         $data = User::create([
             "name" => $request->name,
@@ -72,13 +77,20 @@ class UserController extends Controller
         ]);
     }
     public function storeLoginMember(Request $request) {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ], [
-            'email.required' => 'Masukkan email terlebih dahulu',
-            'password.required' => 'Masukkan password terlebih dahulu',
+        $validator = Validator::make($request->all(), [
+            'email'=> 'required|exists:user_membership|email',
+            'password'=> 'required|exists:user_membership',
+        ],[
+            'email.required' => 'Isi email terlebih dahulu',
+            'email.email' => 'Email tidak valid',
+            'email.exists' => 'Email tidak terdaftar',
+            'password.required' => 'Isi password terlebih dahulu',
+            'password.exists' => 'Password salah',
         ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $login = [
             'email' => $request->input('email'),
             'password' => $request->input('password'),
@@ -98,6 +110,20 @@ class UserController extends Controller
         ]);
     }
     public function updateMemberPass(Request $request) {
+        $validator = Validator::make($request->all(), [
+            "email" => 'required|exists:user_membership|email',
+            "password" => 'required|confirmed',
+        ], [
+            'email.required' => 'Masukkan email terlebih dahulu',
+            'email.exists' => 'Email tidak terdaftar',
+            'email.email' => 'Email tidak valid',
+            'password.required' => 'Password tidak boleh kosong',
+            'password.confirmed' => 'Password tidak sama',
+        ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect('/membership-forgot-password')->withErrors($validator->errors()->messages());
+        }
         $pass = Hash::make($request->password);
         DB::table('users')->where('email', $request->email)->update([
             "password" => $pass
@@ -116,7 +142,7 @@ class UserController extends Controller
     public function storeRegPublisher(Request $request) {
         $validator = Validator::make($request->all(), [
             'username' => 'required|unique:user_publisher|alpha|min:6',
-            'no_telp' => 'required|numeric|max:16',
+            'no_telp' => 'required|numeric',
             'password' => 'required|confirmed',
             'address' => 'required',
         ], [
@@ -130,13 +156,14 @@ class UserController extends Controller
             'address.required' => 'Alamat tidak boleh kosong',
         ]);
         if ($validator->fails()) {
-            dd($validator);
-            return redirect('/membership-register')->withErrors($validator->errors()->messages());
+            dd($validator->errors()->messages());
+            return redirect('/publisher-register')->withErrors($validator->errors()->messages());
         }
+        $username = Str::lower($request->username);
         $data = User::create([
             "name" => time(),
             "email" => microtime(true),
-            "username" => $request->username,
+            "username" => $username,
             "password" => Hash::make($request->password),
             "role" => "publisher",
         ]);
@@ -163,6 +190,19 @@ class UserController extends Controller
         ]);
     }
     public function updatePublishPass(Request $request) {
+        $validator = Validator::make($request->all(), [
+            "username" => 'required|exists:user_publisher',
+            "password" => 'required|confirmed',
+        ], [
+            'username.required' => 'Masukkan username terlebih dahulu',
+            'username.exists' => 'Username tidak terdaftar',
+            'password.required' => 'Password tidak boleh kosong',
+            'password.confirmed' => 'Password tidak sama',
+        ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect('/publisher-forgot-password')->withErrors($validator->errors()->messages());
+        }
         $pass = Hash::make($request->password);
         $data = DB::table('users')->where('username', $request->username);
         $data->update([
@@ -174,10 +214,19 @@ class UserController extends Controller
         return redirect('/publisher-login');
     }
     public function storeLoginPublisher(Request $request) {
-        $request->validate([
-            'username'=> 'required',
-            'password'=> 'required',
+        $validator = Validator::make($request->all(), [
+            'username'=> 'required|exists:user_publisher',
+            'password'=> 'required|exists:user_publisher',
+        ],[
+            'username.required' => 'Isi username terlebih dahulu',
+            'password.required' => 'Isi password terlebih dahulu',
+            'username.exists' => 'Username tidak terdaftar',
+            'password.exists' => 'Password salah',
         ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $login = [
             'username' => $request->input('username'),
             'password' => $request->input('password'),
@@ -198,13 +247,19 @@ class UserController extends Controller
         ]);
     }
     public function storeLoginAdmin(Request $request) {
-        $request->validate([
-            'username'=> 'required',
-            'password'=> 'required',
-        ], [
+        $validator = Validator::make($request->all(), [
+            'username'=> 'required|exists:user_administrator',
+            'password'=> 'required|exists:user_administrator',
+        ],[
             'username.required' => 'Isi username terlebih dahulu',
             'password.required' => 'Isi password terlebih dahulu',
+            'username.exists' => 'Username tidak terdaftar',
+            'password.exists' => 'Password salah',
         ]);
+        if ($validator->fails()) {
+            dd($validator->errors()->messages());
+            return redirect()->withErrors($validator->errors()->messages());
+        }
         $login = [
             'username' => $request->input('username'),
             'password' => $request->input('password'),

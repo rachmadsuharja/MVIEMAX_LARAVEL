@@ -109,16 +109,16 @@
             <img class="w-25 h-25 mb-3" src="/img/logo.png" data-aos="zoom-in" data-aos-duration="1000">
             <h1 class="h3 mb-3" style="color:#dfdfdf;">Ganti Password</h1>
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" style="background-color: #FFFDD0; color:#291F1E" name="username" id="userName" placeholder="Username" autofocus required>
+                <input type="text" class="form-control" style="background-color: #FFFDD0; color:#291F1E" name="username" id="userName" autofocus>
                 <label for="userName">Username</label>
             </div>
             <div class="form-floating mb-2">
-                <input type="password" class="form-control" style="background-color: #FFFDD0; color:#291F1E" name="password" id="password" placeholder="Password" required>
+                <input type="password" class="form-control" style="background-color: #FFFDD0; color:#291F1E" name="password" id="password">
                 <label for="password">Password Baru</label>
             </div>
             <div class="form-floating mb-2">
-                <input type="password" class="form-control" style="background-color: #FFFDD0; color:#291F1E" name="confirm_password" id="password" placeholder="Password" required>
-                <label for="password">Konfirmasi Password Baru</label>
+                <input type="password" class="form-control" style="background-color: #FFFDD0; color:#291F1E" name="password_confirmation" id="password_confirmation">
+                <label for="password_confirmation">Konfirmasi Password Baru</label>
             </div>
             <button class="w-100 mb-3 btn btn-lg btn-danger text-dark" name="gantiPW" id="submit" type="submit" style="background-color:#FFAC42">Ganti</button>
         </form>

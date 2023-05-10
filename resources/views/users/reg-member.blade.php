@@ -29,7 +29,7 @@
                             </div>
                             <div class="mb-2">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                                <input type="text" class="form-control" name="email" id="email" placeholder="name@example.com">
                             </div>
                             <div class="mb-2 d-flex justify-content-between">
                                 <div class="mb-2">

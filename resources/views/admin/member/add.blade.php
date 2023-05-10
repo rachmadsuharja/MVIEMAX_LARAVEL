@@ -38,8 +38,8 @@
                         <input class="form-control" type="password" name="password" id="password" placeholder="Password..." aria-label="default input example">
                     </div>
                     <div class="mb-3">
-                        <label for="password2" class="form-label">Konfirmasi Password</label>
-                        <input class="form-control" type="password" name="password2" id="password2" placeholder="Konfirmasi password..." aria-label="default input example">
+                        <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                        <input class="form-control" type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi password..." aria-label="default input example">
                     </div>
                 </div>
                 <div class="mb-3">

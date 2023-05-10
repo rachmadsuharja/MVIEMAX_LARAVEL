@@ -13,11 +13,11 @@
                 </div> 
                 <form action="{{route('store-publisher')}}" method="POST">
                     @csrf
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
                                     @foreach ($errors->all() as $error)
-                                        <div class="alert alert-transparent p-0 text-white-50 mt-1"><i class="fa-solid fa-circle-exclamation"></i> test</div>
+                                        <div class="alert alert-transparent p-0 text-white-50 mt-1"><i class="fa-solid fa-circle-exclamation"></i>{{$error}}</div>
                                     @endforeach
                                 </ul>
                             </div>
@@ -36,15 +36,14 @@
                                 <input class="form-control" type="password" name="password" id="password" placeholder="Password..." aria-label="default input example">
                             </div>
                             <div class="mb-3">
-                                <label for="password2" class="form-label">Konfirmasi Password</label>
-                                <input class="form-control" type="password" name="password2" id="password2" placeholder="Konfirmasi Password..." aria-label="default input example">
+                                <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                                <input class="form-control" type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi Password..." aria-label="default input example">
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-floating">
                                 <textarea class="form-control" placeholder="Alamat..." id="address" name="address" style="height: 100px; resize:none;"></textarea>
                                 <label for="address" class="text-dark">Alamat</label>
-
                             </div>
                         </div>
                         <div class="mb-3 d-flex justify-content-between">
